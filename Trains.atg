@@ -10,13 +10,13 @@ IGNORE CHR(0) .. CHR(31)
 
 PRODUCTIONS
   Trains    = { OneTrain } EOF .
-  OneTrain  = LocoPart [ Mixed  | Freight "brake" | Passenger] SYNC "." .
+  OneTrain  = LocoPart [ Mixed  | Passenger] SYNC "." .
   Passenger = HumanPart { HumanPart } .
-  Mixed 	= Freight Safe { HumanPart } . 
-  Freight 	= Truck { Truck } .
+  Mixed 	= Freight ("brake" | [Safe] { HumanPart }) . 
+  Freight 	= (Truck|Safe) { Truck|Safe } .
   LocoPart  = "loco" { "loco" } .
   Safe		= "coal" | "closed" | "open" | "cattle" .
   HumanPart = "brake" | { "coach" } "guard" .
-  Truck     = "coal" | "closed" | "open" | "cattle" | "fuel" .
+  Truck     = "fuel" .
 END Trains.
 

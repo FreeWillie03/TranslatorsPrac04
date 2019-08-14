@@ -4,41 +4,31 @@
    3 loco coal coal open fuel open cattle cattle brake .    (* valid - freight train *)
    4 
    5 loco cattle open coach coach coach guard .             (* valid - mixed freight/passenger train *)
-****                  ^ invalid Truck
    6 
    7 loco loco open open coach coach guard .                (* valid *)
-****                     ^ invalid Truck
    8 
    9 loco loco open fuel open fuel brake .                  (* valid - freight train with fuel *)
-****                          ^ this symbol not expected in OneTrain
   10 
   11 loco loco open fuel fuel open fuel brake .             (* valid - freight train with fuel *)
-****                               ^ this symbol not expected in OneTrain
   12 
   13 loco open fuel open coach coach guard .                (* valid - mixed train with fuel *)
   14 
   15 loco loco open open coach coach brake .                (* invalid *)
-****                     ^ invalid Truck
 ****                                 ^ "guard" expected
   16 
   17 loco loco open open coach coach guard brake .          (* invalid *)
-****                     ^ invalid Truck
   18 
   19 loco loco open open coach coach open guard .           (* invalid *)
-****                     ^ invalid Truck
 ****                                 ^ "guard" expected
   20 
   21 loco fuel open fuel open brake .                       (* invalid *)
-****      ^ this symbol not expected in OneTrain
   22 
   23 loco loco fuel fuel fuel brake .                       (* invalid *)
-****           ^ this symbol not expected in OneTrain
   24 
   25 loco open fuel open fuel open coach .                  (* invalid *)
-****                     ^ this symbol not expected in OneTrain
+****                                     ^ "guard" expected
   26 
   27 loco open fuel open fuel coach guard .                 (* invalid *)
-****                     ^ this symbol not expected in OneTrain
   28 
   29 loco coach coach coach .                               (* invalid *)
 ****                        ^ "guard" expected
@@ -52,4 +42,4 @@
   37 loco guard .                                           (* valid *)
   38 
 
-14 errors detected
+4 errors detected
