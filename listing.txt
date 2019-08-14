@@ -1,38 +1,55 @@
-  Warning: Weather is deletable
-  LL1 warning in Radio: "advert" is the start of several alternatives
-  LL1 warning in TalkShow: "song" is the start & successor of a deletable structure
-  LL1 warning in TalkShow: "advert" is the start & successor of a deletable structure
-  LL1 warning in NewsBulletin: the contents of [...] or {...} must not be deletable
-  LL1 warning in NewsItem: "SACP" is the start & successor of a deletable structure
-  LL1 warning in NewsItem: "ANC" is the start of several alternatives
 
-   1 COMPILER Radio $TF
-   2 /* Describe a day's activity on our National Broadcaster
-   3    P.D. Terry, Rhodes University, 2017 */
+   1 loco coach coach coach coach coach guard .             (* valid - passenger train *)
+   2 
+   3 loco coal coal open fuel open cattle cattle brake .    (* valid - freight train *)
    4 
-   5 CHARACTERS
-   6   letter     = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-   7                + "abcdefghijklmnopqrstuvwxyz" .
-   8   digit      = "0123456789" .
-   9 
-  10 TOKENS
-  11   identifier = letter { letter | digit } .
-  12   number     = digit { digit } .
-  13 
-  14 IGNORE CHR(0) .. CHR(31)
-  15 
-  16 PRODUCTIONS
-  17   Radio        =   { TalkShow | NewsBulletin | "song" | "advert" } EOF .
-  18   NewsBulletin =   "advert" NewsItem { NewsItem } [ Weather ] Filler .
-  19   NewsItem     =      "ANC" [ "SACP" ] | "protest" | [ "SACP" ] "ANC" | "zuma"
-  20                    | "Helen" "tweet" | Scandal | Accident .
-  21   TalkShow     =   "host" { listener "host" } [ Filler ] .
-  22   Accident     =   "collision" "claims" "another" number "lives" .
-  23   Scandal      =   { "GuptaLeak" } "corruption"  | "Hlaudi" .
-  24   Filler       =   "song" | "advert"  .
-  25   Weather      =   { "snow" | "rain" | "cloudy" | "windy" } .
-  26   listener     =   identifier .
-  27 END Radio.
+   5 loco cattle open coach coach coach guard .             (* valid - mixed freight/passenger train *)
+****                  ^ invalid Truck
+   6 
+   7 loco loco open open coach coach guard .                (* valid *)
+****                     ^ invalid Truck
+   8 
+   9 loco loco open fuel open fuel brake .                  (* valid - freight train with fuel *)
+****                          ^ this symbol not expected in OneTrain
+  10 
+  11 loco loco open fuel fuel open fuel brake .             (* valid - freight train with fuel *)
+****                               ^ this symbol not expected in OneTrain
+  12 
+  13 loco open fuel open coach coach guard .                (* valid - mixed train with fuel *)
+  14 
+  15 loco loco open open coach coach brake .                (* invalid *)
+****                     ^ invalid Truck
+****                                 ^ "guard" expected
+  16 
+  17 loco loco open open coach coach guard brake .          (* invalid *)
+****                     ^ invalid Truck
+  18 
+  19 loco loco open open coach coach open guard .           (* invalid *)
+****                     ^ invalid Truck
+****                                 ^ "guard" expected
+  20 
+  21 loco fuel open fuel open brake .                       (* invalid *)
+****      ^ this symbol not expected in OneTrain
+  22 
+  23 loco loco fuel fuel fuel brake .                       (* invalid *)
+****           ^ this symbol not expected in OneTrain
+  24 
+  25 loco open fuel open fuel open coach .                  (* invalid *)
+****                     ^ this symbol not expected in OneTrain
+  26 
+  27 loco open fuel open fuel coach guard .                 (* invalid *)
+****                     ^ this symbol not expected in OneTrain
+  28 
+  29 loco coach coach coach .                               (* invalid *)
+****                        ^ "guard" expected
+  30 
+  31 loco .                                                 (* valid - loco travelling light *)
+  32 
+  33 loco loco .                                            (* valid *)
+  34 
+  35 loco brake .                                           (* valid *)
+  36 
+  37 loco guard .                                           (* valid *)
+  38 
 
-0 errors detected
-7 warnings detected
+14 errors detected
