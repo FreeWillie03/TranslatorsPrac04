@@ -12,10 +12,9 @@ PRODUCTIONS
   Trains    = { OneTrain } EOF .
   OneTrain  = LocoPart [ Mixed  | Freight "brake" | Passenger] SYNC "." .
   Passenger = HumanPart { HumanPart } .
-  Mixed 	= Freight Safe { HumanPart } . 
+  Mixed 	= Freight  HumanPart  . 
   Freight 	= Truck { Truck } .
   LocoPart  = "loco" { "loco" } .
-  Safe		= "coal" | "closed" | "open" | "cattle" .
   HumanPart = "brake" | { "coach" } "guard" .
   Truck     = "coal" | "closed" | "open" | "cattle" | "fuel" .
 END Trains.
